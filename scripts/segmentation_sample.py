@@ -30,7 +30,7 @@ import torchvision.transforms as transforms
 from torchsummary import summary
 seed=10
 th.manual_seed(seed)
-th.cuda.manual_seed_all(seed)
+# th.cuda.manual_seed_all(seed)
 np.random.seed(seed)
 random.seed(seed)
 
@@ -101,13 +101,13 @@ def main():
 
         logger.log("sampling...")
 
-        start = th.cuda.Event(enable_timing=False,blocking=False,interprocess=False)#madhav here
-        end = th.cuda.Event(enable_timing=False,blocking=False,interprocess=False)
+        # start = th.cuda.Event(enable_timing=False,blocking=False,interprocess=False)#madhav here
+        # end = th.cuda.Event(enable_timing=False,blocking=False,interprocess=False)
         enslist = []
 
         for i in range(args.num_ensemble):  #this is for the generation of an ensemble of 5 masks.
             model_kwargs = {}
-            start.record()
+            # start.record()
             sample_fn = (
                 diffusion.p_sample_loop_known if not args.use_ddim else diffusion.ddim_sample_loop_known
             )
@@ -119,9 +119,9 @@ def main():
                 model_kwargs=model_kwargs,
             )
 
-            end.record()
-            th.cuda.synchronize()
-            print('time for 1 sample', start.elapsed_time(end))  #time measurement for the generation of 1 sample
+            # end.record()
+            # th.cuda.synchronize()
+            # print('time for 1 sample', start.elapsed_time(end))  #time measurement for the generation of 1 sample
 
             co = th.tensor(cal_out)
             if args.version == 'new':
